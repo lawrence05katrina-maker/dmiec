@@ -9,50 +9,30 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as IndexRouteImport } from './routes/index'
-import { Route as AdminloginRouteImport } from './routes/adminlogin'
-import { Route as DashboardRouteImport } from './routes/dashboard'
-import { Route as LeaderboardRouteImport } from './routes/leaderboard'
-import { Route as LoginRouteImport } from './routes/login'
-import { Route as RegisterRouteImport } from './routes/register'
 import { Route as SubmissionsRouteImport } from './routes/submissions'
-import { Route as AdminIndexRouteImport } from './routes/admin.index'
-import { Route as AdminCodingRouteImport } from './routes/admin.coding'
-import { Route as AdminDebuggingRouteImport } from './routes/admin.debugging'
-import { Route as AdminLeaderboardRouteImport } from './routes/admin.leaderboard'
-import { Route as AdminProblemsRouteImport } from './routes/admin.problems'
-import { Route as AdminQuizzesRouteImport } from './routes/admin.quizzes'
-import { Route as AdminStudentsRouteImport } from './routes/admin.students'
-import { Route as AdminSubmissionsRouteImport } from './routes/admin.submissions'
-import { Route as DebuggingIndexRouteImport } from './routes/debugging.index'
-import { Route as ProblemsIndexRouteImport } from './routes/problems.index'
-import { Route as ProblemsIdRouteImport } from './routes/problems.$id'
+import { Route as RegisterRouteImport } from './routes/register'
+import { Route as LoginRouteImport } from './routes/login'
+import { Route as LeaderboardRouteImport } from './routes/leaderboard'
+import { Route as DashboardRouteImport } from './routes/dashboard'
+import { Route as AdminloginRouteImport } from './routes/adminlogin'
+import { Route as IndexRouteImport } from './routes/index'
 import { Route as QuizzesIndexRouteImport } from './routes/quizzes.index'
+import { Route as ProblemsIndexRouteImport } from './routes/problems.index'
+import { Route as DebuggingIndexRouteImport } from './routes/debugging.index'
+import { Route as AdminIndexRouteImport } from './routes/admin.index'
 import { Route as QuizzesIdRouteImport } from './routes/quizzes.$id'
+import { Route as ProblemsIdRouteImport } from './routes/problems.$id'
+import { Route as AdminSubmissionsRouteImport } from './routes/admin.submissions'
+import { Route as AdminStudentsRouteImport } from './routes/admin.students'
+import { Route as AdminQuizzesRouteImport } from './routes/admin.quizzes'
+import { Route as AdminProblemsRouteImport } from './routes/admin.problems'
+import { Route as AdminLeaderboardRouteImport } from './routes/admin.leaderboard'
+import { Route as AdminDebuggingRouteImport } from './routes/admin.debugging'
+import { Route as AdminCodingRouteImport } from './routes/admin.coding'
 
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminloginRoute = AdminloginRouteImport.update({
-  id: '/adminlogin',
-  path: '/adminlogin',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DashboardRoute = DashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LeaderboardRoute = LeaderboardRouteImport.update({
-  id: '/leaderboard',
-  path: '/leaderboard',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const LoginRoute = LoginRouteImport.update({
-  id: '/login',
-  path: '/login',
+const SubmissionsRoute = SubmissionsRouteImport.update({
+  id: '/submissions',
+  path: '/submissions',
   getParentRoute: () => rootRouteImport,
 } as any)
 const RegisterRoute = RegisterRouteImport.update({
@@ -60,64 +40,29 @@ const RegisterRoute = RegisterRouteImport.update({
   path: '/register',
   getParentRoute: () => rootRouteImport,
 } as any)
-const SubmissionsRoute = SubmissionsRouteImport.update({
-  id: '/submissions',
-  path: '/submissions',
+const LoginRoute = LoginRouteImport.update({
+  id: '/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminIndexRoute = AdminIndexRouteImport.update({
-  id: '/admin/',
-  path: '/admin/',
+const LeaderboardRoute = LeaderboardRouteImport.update({
+  id: '/leaderboard',
+  path: '/leaderboard',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminCodingRoute = AdminCodingRouteImport.update({
-  id: '/admin/coding',
-  path: '/admin/coding',
+const DashboardRoute = DashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminDebuggingRoute = AdminDebuggingRouteImport.update({
-  id: '/admin/debugging',
-  path: '/admin/debugging',
+const AdminloginRoute = AdminloginRouteImport.update({
+  id: '/adminlogin',
+  path: '/adminlogin',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AdminLeaderboardRoute = AdminLeaderboardRouteImport.update({
-  id: '/admin/leaderboard',
-  path: '/admin/leaderboard',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminProblemsRoute = AdminProblemsRouteImport.update({
-  id: '/admin/problems',
-  path: '/admin/problems',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminQuizzesRoute = AdminQuizzesRouteImport.update({
-  id: '/admin/quizzes',
-  path: '/admin/quizzes',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminStudentsRoute = AdminStudentsRouteImport.update({
-  id: '/admin/students',
-  path: '/admin/students',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AdminSubmissionsRoute = AdminSubmissionsRouteImport.update({
-  id: '/admin/submissions',
-  path: '/admin/submissions',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DebuggingIndexRoute = DebuggingIndexRouteImport.update({
-  id: '/debugging/',
-  path: '/debugging/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProblemsIndexRoute = ProblemsIndexRouteImport.update({
-  id: '/problems/',
-  path: '/problems/',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ProblemsIdRoute = ProblemsIdRouteImport.update({
-  id: '/problems/$id',
-  path: '/problems/$id',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const QuizzesIndexRoute = QuizzesIndexRouteImport.update({
@@ -125,9 +70,64 @@ const QuizzesIndexRoute = QuizzesIndexRouteImport.update({
   path: '/quizzes/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ProblemsIndexRoute = ProblemsIndexRouteImport.update({
+  id: '/problems/',
+  path: '/problems/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const DebuggingIndexRoute = DebuggingIndexRouteImport.update({
+  id: '/debugging/',
+  path: '/debugging/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminIndexRoute = AdminIndexRouteImport.update({
+  id: '/admin/',
+  path: '/admin/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const QuizzesIdRoute = QuizzesIdRouteImport.update({
   id: '/quizzes/$id',
   path: '/quizzes/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ProblemsIdRoute = ProblemsIdRouteImport.update({
+  id: '/problems/$id',
+  path: '/problems/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminSubmissionsRoute = AdminSubmissionsRouteImport.update({
+  id: '/admin/submissions',
+  path: '/admin/submissions',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminStudentsRoute = AdminStudentsRouteImport.update({
+  id: '/admin/students',
+  path: '/admin/students',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminQuizzesRoute = AdminQuizzesRouteImport.update({
+  id: '/admin/quizzes',
+  path: '/admin/quizzes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminProblemsRoute = AdminProblemsRouteImport.update({
+  id: '/admin/problems',
+  path: '/admin/problems',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminLeaderboardRoute = AdminLeaderboardRouteImport.update({
+  id: '/admin/leaderboard',
+  path: '/admin/leaderboard',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminDebuggingRoute = AdminDebuggingRouteImport.update({
+  id: '/admin/debugging',
+  path: '/admin/debugging',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminCodingRoute = AdminCodingRouteImport.update({
+  id: '/admin/coding',
+  path: '/admin/coding',
   getParentRoute: () => rootRouteImport,
 } as any)
 
@@ -292,39 +292,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/adminlogin': {
-      id: '/adminlogin'
-      path: '/adminlogin'
-      fullPath: '/adminlogin'
-      preLoaderRoute: typeof AdminloginRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/dashboard': {
-      id: '/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof DashboardRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/leaderboard': {
-      id: '/leaderboard'
-      path: '/leaderboard'
-      fullPath: '/leaderboard'
-      preLoaderRoute: typeof LeaderboardRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/login': {
-      id: '/login'
-      path: '/login'
-      fullPath: '/login'
-      preLoaderRoute: typeof LoginRouteImport
+    '/submissions': {
+      id: '/submissions'
+      path: '/submissions'
+      fullPath: '/submissions'
+      preLoaderRoute: typeof SubmissionsRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/register': {
@@ -334,88 +306,39 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RegisterRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/submissions': {
-      id: '/submissions'
-      path: '/submissions'
-      fullPath: '/submissions'
-      preLoaderRoute: typeof SubmissionsRouteImport
+    '/login': {
+      id: '/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof LoginRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/': {
-      id: '/admin/'
-      path: '/admin'
-      fullPath: '/admin/'
-      preLoaderRoute: typeof AdminIndexRouteImport
+    '/leaderboard': {
+      id: '/leaderboard'
+      path: '/leaderboard'
+      fullPath: '/leaderboard'
+      preLoaderRoute: typeof LeaderboardRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/coding': {
-      id: '/admin/coding'
-      path: '/admin/coding'
-      fullPath: '/admin/coding'
-      preLoaderRoute: typeof AdminCodingRouteImport
+    '/dashboard': {
+      id: '/dashboard'
+      path: '/dashboard'
+      fullPath: '/dashboard'
+      preLoaderRoute: typeof DashboardRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/debugging': {
-      id: '/admin/debugging'
-      path: '/admin/debugging'
-      fullPath: '/admin/debugging'
-      preLoaderRoute: typeof AdminDebuggingRouteImport
+    '/adminlogin': {
+      id: '/adminlogin'
+      path: '/adminlogin'
+      fullPath: '/adminlogin'
+      preLoaderRoute: typeof AdminloginRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/admin/leaderboard': {
-      id: '/admin/leaderboard'
-      path: '/admin/leaderboard'
-      fullPath: '/admin/leaderboard'
-      preLoaderRoute: typeof AdminLeaderboardRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/problems': {
-      id: '/admin/problems'
-      path: '/admin/problems'
-      fullPath: '/admin/problems'
-      preLoaderRoute: typeof AdminProblemsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/quizzes': {
-      id: '/admin/quizzes'
-      path: '/admin/quizzes'
-      fullPath: '/admin/quizzes'
-      preLoaderRoute: typeof AdminQuizzesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/students': {
-      id: '/admin/students'
-      path: '/admin/students'
-      fullPath: '/admin/students'
-      preLoaderRoute: typeof AdminStudentsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/admin/submissions': {
-      id: '/admin/submissions'
-      path: '/admin/submissions'
-      fullPath: '/admin/submissions'
-      preLoaderRoute: typeof AdminSubmissionsRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/debugging/': {
-      id: '/debugging/'
-      path: '/debugging'
-      fullPath: '/debugging/'
-      preLoaderRoute: typeof DebuggingIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/problems/': {
-      id: '/problems/'
-      path: '/problems'
-      fullPath: '/problems/'
-      preLoaderRoute: typeof ProblemsIndexRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/problems/$id': {
-      id: '/problems/$id'
-      path: '/problems/$id'
-      fullPath: '/problems/$id'
-      preLoaderRoute: typeof ProblemsIdRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/quizzes/': {
@@ -425,11 +348,88 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof QuizzesIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/problems/': {
+      id: '/problems/'
+      path: '/problems'
+      fullPath: '/problems/'
+      preLoaderRoute: typeof ProblemsIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/debugging/': {
+      id: '/debugging/'
+      path: '/debugging'
+      fullPath: '/debugging/'
+      preLoaderRoute: typeof DebuggingIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/': {
+      id: '/admin/'
+      path: '/admin'
+      fullPath: '/admin/'
+      preLoaderRoute: typeof AdminIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/quizzes/$id': {
       id: '/quizzes/$id'
       path: '/quizzes/$id'
       fullPath: '/quizzes/$id'
       preLoaderRoute: typeof QuizzesIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/problems/$id': {
+      id: '/problems/$id'
+      path: '/problems/$id'
+      fullPath: '/problems/$id'
+      preLoaderRoute: typeof ProblemsIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/submissions': {
+      id: '/admin/submissions'
+      path: '/admin/submissions'
+      fullPath: '/admin/submissions'
+      preLoaderRoute: typeof AdminSubmissionsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/students': {
+      id: '/admin/students'
+      path: '/admin/students'
+      fullPath: '/admin/students'
+      preLoaderRoute: typeof AdminStudentsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/quizzes': {
+      id: '/admin/quizzes'
+      path: '/admin/quizzes'
+      fullPath: '/admin/quizzes'
+      preLoaderRoute: typeof AdminQuizzesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/problems': {
+      id: '/admin/problems'
+      path: '/admin/problems'
+      fullPath: '/admin/problems'
+      preLoaderRoute: typeof AdminProblemsRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/leaderboard': {
+      id: '/admin/leaderboard'
+      path: '/admin/leaderboard'
+      fullPath: '/admin/leaderboard'
+      preLoaderRoute: typeof AdminLeaderboardRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/debugging': {
+      id: '/admin/debugging'
+      path: '/admin/debugging'
+      fullPath: '/admin/debugging'
+      preLoaderRoute: typeof AdminDebuggingRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/coding': {
+      id: '/admin/coding'
+      path: '/admin/coding'
+      fullPath: '/admin/coding'
+      preLoaderRoute: typeof AdminCodingRouteImport
       parentRoute: typeof rootRouteImport
     }
   }
