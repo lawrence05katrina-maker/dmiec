@@ -106,8 +106,8 @@ function QAdmin() {
                 {q.isHidden && <span className="text-xs px-2 py-0.5 rounded-full bg-pastel-yellow">Hidden</span>}
               </div>
               <div className="text-xs text-muted-foreground">
-                {q.topic} · {q.difficulty} · {q.timeLimit}min · {q.questions.length} Qs
-                {q.questionCount ? ` · asks ${q.questionCount} at random` : ""}
+                {q.topic} · {q.difficulty} · {q.timeLimit}min · {q.questions.length} in bank
+                {q.questionCount ? ` · ${q.questionCount} shown per student (shuffled)` : " · all shown to every student"}
               </div>
             </div>
             <div className="flex gap-2 flex-wrap">
@@ -156,6 +156,20 @@ function QuizEditor({ initial, onCancel, onSave }: { initial: Quiz; onCancel: ()
     toast.success("Questions added to quiz");
   }
 
+  function handleSaveClick() {
+    if (q.questionCount !== undefined && q.questionCount <= 0) {
+      toast.error("Questions to ask must be a positive number.");
+      return;
+    }
+    if (q.questionCount && q.questionCount > q.questions.length) {
+      toast.error(`You're asking for ${q.questionCount} questions, but the bank only has ${q.questions.length}. Add more questions below or reduce this number.`);
+      return;
+    }
+    onSave(q);
+  }
+
+  const poolShortfall = q.questionCount && q.questionCount > q.questions.length;
+
   return (
     <div className="fixed inset-0 bg-black/40 z-50 grid place-items-center p-4 overflow-y-auto">
       <GlassCard tint="plain" className="max-w-3xl w-full p-6 max-h-[90vh] overflow-y-auto">
@@ -169,14 +183,29 @@ function QuizEditor({ initial, onCancel, onSave }: { initial: Quiz; onCancel: ()
             </select></div>
           <div><label className="text-xs">Time limit (min)</label><Input type="number" value={q.timeLimit} onChange={(e) => setQ({ ...q, timeLimit: Number(e.target.value) })} /></div>
           <div className="sm:col-span-2">
-            <label className="text-xs">Questions to ask (leave blank for all)</label>
+            <label className="text-xs">Questions to ask per student (leave blank for all)</label>
             <Input
               type="number"
               value={q.questionCount ?? ""}
               onChange={(e) => setQ({ ...q, questionCount: e.target.value ? Number(e.target.value) : undefined })}
               placeholder="e.g. 30"
+              className={poolShortfall ? "border-rose-400" : ""}
             />
-            <div className="text-xs text-muted-foreground mt-1">Each student gets a different random subset, shuffled, from the full question bank below.</div>
+            <div className="text-xs mt-1">
+              {q.questions.length > 0 ? (
+                <span className="text-muted-foreground">
+                  Question bank currently has <strong>{q.questions.length}</strong> question{q.questions.length === 1 ? "" : "s"} below.
+                  {q.questionCount ? ` Each student will get a different random ${q.questionCount}, shuffled and locked to them.` : " Every student will see all of them."}
+                </span>
+              ) : (
+                <span className="text-muted-foreground">Add questions below or import from Excel to build the question bank first.</span>
+              )}
+              {poolShortfall && (
+                <div className="text-rose-600 font-medium mt-1">
+                  Warning: you're asking for {q.questionCount}, but only {q.questions.length} exist in the bank — add more questions or lower this number before saving.
+                </div>
+              )}
+            </div>
           </div>
         </div>
 
@@ -184,7 +213,7 @@ function QuizEditor({ initial, onCancel, onSave }: { initial: Quiz; onCancel: ()
           <div className="flex items-center justify-between flex-wrap gap-2">
             <div>
               <div className="font-semibold text-sm flex items-center gap-2"><Upload className="h-4 w-4" /> Bulk import from Excel</div>
-              <div className="text-xs text-muted-foreground mt-0.5">Columns: <code>Question | OptionA | OptionB | OptionC | OptionD | CorrectAnswer | Marks</code>. CorrectAnswer can be A/B/C/D, 1–4, or the option text.</div>
+              <div className="text-xs text-muted-foreground mt-0.5">Columns: <code>Question | OptionA | OptionB | OptionC | OptionD | CorrectAnswer | Marks</code>. CorrectAnswer can be A/B/C/D, 1–4, or the option text. Import a large sheet (e.g. 100 rows) to build a big question bank, then set "Questions to ask" above to a smaller number like 30.</div>
             </div>
             <input ref={fileRef} type="file" accept=".xlsx,.xls,.csv" onChange={(e) => { const f = e.target.files?.[0]; if (f) handleFile(f); }} className="text-xs" />
           </div>
@@ -243,7 +272,7 @@ function QuizEditor({ initial, onCancel, onSave }: { initial: Quiz; onCancel: ()
 
         <div className="mt-5 flex gap-2 justify-end">
           <Button variant="secondary" onClick={onCancel}>Cancel</Button>
-          <Button onClick={() => onSave(q)}>Save Quiz</Button>
+          <Button onClick={handleSaveClick}>Save Quiz</Button>
         </div>
       </GlassCard>
     </div>
