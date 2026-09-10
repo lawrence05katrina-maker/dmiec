@@ -6,7 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
 import type { Quiz, QuizQuestion } from "@/lib/types";
-import { Trash2, Plus, Upload, Eye, EyeOff, BarChart3, KeyRound, Download } from "lucide-react";
+import { Trash2, Plus, Upload, Eye, EyeOff, BarChart3, KeyRound, Download, Mail } from "lucide-react";
 import { readSheet, rowsToQuestions } from "@/lib/excel";
 import { BASE_URL } from "@/config/apiConfig";
 import * as XLSX from "xlsx";
@@ -21,6 +21,7 @@ function uid() {
 }
 
 export const Route = createFileRoute("/admin/quizzes")({ component: () => <Guard role="admin"><QAdmin /></Guard> });
+
 
 function QAdmin() {
   const [quizzes, setQuizzes] = useState<Quiz[]>([]);
@@ -289,6 +290,7 @@ function AccessCodeModal({ quiz, onClose }: { quiz: Quiz; onClose: () => void })
   const [generating, setGenerating] = useState(false);
   const [regNo, setRegNo] = useState("");
   const [singleGenLoading, setSingleGenLoading] = useState(false);
+  const [emailing, setEmailing] = useState(false);
 
   async function loadCodes() {
     setLoading(true);
@@ -346,6 +348,22 @@ function AccessCodeModal({ quiz, onClose }: { quiz: Quiz; onClose: () => void })
     }
   }
 
+  async function handleEmailCodes() {
+    setEmailing(true);
+    try {
+      const res = await fetch(`${BASE_URL}/api/admin/quizzes/${quiz.id}/access-codes/email`, {
+        method: "POST", headers: authHeaders(),
+      });
+      const data = await res.json();
+      if (!res.ok) { toast.error(data?.message || "Failed to email codes"); return; }
+      toast.success(data.message);
+    } catch {
+      toast.error("Could not reach server");
+    } finally {
+      setEmailing(false);
+    }
+  }
+
   function downloadExcel() {
     const rows = codes.map((c) => ({
       Name: c.name, "Register No": c.registerNo, Year: c.year, Code: c.code, Used: c.isUsed ? "Yes" : "No",
@@ -393,9 +411,14 @@ function AccessCodeModal({ quiz, onClose }: { quiz: Quiz; onClose: () => void })
         <div className="mt-4">
           <div className="flex items-center justify-between">
             <div className="text-sm font-semibold">Generated codes ({codes.length})</div>
-            <Button size="sm" variant="secondary" onClick={downloadExcel} disabled={codes.length === 0}>
-              <Download className="h-4 w-4" /> Download Excel
-            </Button>
+            <div className="flex gap-2">
+              <Button size="sm" variant="secondary" onClick={handleEmailCodes} disabled={emailing || codes.length === 0}>
+                <Mail className="h-4 w-4" /> {emailing ? "Sending..." : "Email codes to students"}
+              </Button>
+              <Button size="sm" variant="secondary" onClick={downloadExcel} disabled={codes.length === 0}>
+                <Download className="h-4 w-4" /> Download Excel
+              </Button>
+            </div>
           </div>
           {loading ? (
             <div className="text-sm text-muted-foreground mt-2">Loading...</div>
