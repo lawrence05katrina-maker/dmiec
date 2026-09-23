@@ -124,7 +124,7 @@ function SymposiumHome() {
 
       <section className="max-w-4xl mx-auto px-4 sm:px-6 py-16 sm:py-24 text-center">
         <h2 className="font-display text-3xl sm:text-5xl uppercase tracking-tight leading-tight">
-          Every college. <span className="text-[#FF0000]">Every branch.</span>
+          Every college. <span className="text-[#FF0000]">Tech branch.</span>
         </h2>
         <p className="mt-6 text-white/60 max-w-xl mx-auto text-sm sm:text-base">
           Open to all engineering students across all departments and years. Pick your events,

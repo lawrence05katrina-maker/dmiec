@@ -265,7 +265,7 @@ function SymposiumRegister() {
         <p className="text-white/50 text-center mt-2 sm:mt-3 text-xs sm:text-sm max-w-md mx-auto leading-relaxed">
           {step === 4
             ? "We'll verify your payment and email your confirmation within 24 hours."
-            : "₹200 registration fee · ₹150 for online paper presentation · All colleges, all branches"}
+            : "₹200 registration fee · ₹150 for online paper presentation · All colleges, Tech branches"}
         </p>
 
         <StepBar current={step} />
@@ -361,7 +361,7 @@ function SymposiumRegister() {
             <button
               onClick={() => setShowHelpToast(false)}
               aria-label="Close"
-              className="absolute top-2.5 right-2.5 h-7 w-7 grid place-items-center text-white/40 hover:text-white transition-colors z-10"
+              className="absolute top-2.5 right-2.5 h-8 w-8 grid place-items-center text-white/40 hover:text-white transition-colors z-10 touch-manipulation active:scale-95"
             >
               <X className="h-4 w-4" />
             </button>
@@ -377,7 +377,7 @@ function SymposiumRegister() {
                 </div>
                 <button
                   onClick={() => navigate({ to: "/symposium/support" })}
-                  className="px-3 py-1.5 bg-[#FF0000] text-white text-[10px] font-bold uppercase tracking-wider hover:brightness-110 transition shrink-0"
+                  className="px-4 py-2 bg-[#FF0000] text-white text-[10px] font-bold uppercase tracking-wider hover:brightness-110 transition shrink-0 touch-manipulation active:scale-95 min-h-[44px] flex items-center"
                 >
                   Help
                 </button>
@@ -396,7 +396,7 @@ function SymposiumRegister() {
                 </p>
                 <button
                   onClick={() => navigate({ to: "/symposium/support" })}
-                  className="mt-3 px-4 py-2.5 bg-[#FF0000] text-white text-xs font-bold uppercase tracking-wide hover:brightness-110 transition"
+                  className="mt-3 px-4 py-2.5 bg-[#FF0000] text-white text-xs font-bold uppercase tracking-wide hover:brightness-110 transition touch-manipulation active:scale-95"
                 >
                   Raise Query
                 </button>
