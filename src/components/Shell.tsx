@@ -1,7 +1,7 @@
 import { Link, useRouter } from "@tanstack/react-router";
 import { useAuth } from "@/lib/auth";
 import { Button } from "@/components/ui/button";
-import { Code2, LogOut, LayoutDashboard, ListChecks, Trophy, User as UserIcon, Bug, BarChart3, Users } from "lucide-react";
+import { Code2, LogOut, LayoutDashboard, ListChecks, Trophy, User as UserIcon, Bug, BarChart3, Users, Calendar } from "lucide-react";
 import type { ReactNode } from "react";
 
 
@@ -26,6 +26,7 @@ export function Shell({ children }: { children: ReactNode }) {
     { to: "/admin/students", label: "Students", icon: Users },
     { to: "/admin/debugging", label: "Debugging", icon: Bug },
     { to: "/admin/leaderboard", label: "Leaderboard", icon: Trophy },
+    { to: "/admin/symposium", label: "Symposium", icon: Calendar },
   ];
   const links = user?.role === "admin" ? adminLinks : studentLinks;
 
@@ -109,7 +110,7 @@ export function Shell({ children }: { children: ReactNode }) {
   );
 }
 
-export function GlassCard({ children, className = "", tint = "mint" }: { children: ReactNode; className?: string; tint?: "mint" | "pink" | "lavender" | "yellow" | "sky" | "plain" }) {
+export function GlassCard({ children, className = "", tint = "mint" }: { children: ReactNode; className?: string; tint?: "mint" | "pink" | "lavender" | "yellow" | "sky" | "plain" | "blue" | "green" | "purple" | "orange" }) {
   const tints: Record<string, string> = {
     mint: "bg-pastel-mint/40",
     pink: "bg-pastel-pink/40",
@@ -117,6 +118,10 @@ export function GlassCard({ children, className = "", tint = "mint" }: { childre
     yellow: "bg-pastel-yellow/40",
     sky: "bg-pastel-sky/40",
     plain: "bg-white/70",
+    blue: "bg-blue-50/70",
+    green: "bg-green-50/70",
+    purple: "bg-purple-50/70",
+    orange: "bg-orange-50/70",
   };
   return (
     <div className={`rounded-2xl border border-white/60 shadow-sm backdrop-blur ${tints[tint]} ${className}`}>{children}</div>

@@ -9,6 +9,7 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
+import { Route as SymposiumRouteImport } from './routes/symposium'
 import { Route as SubmissionsRouteImport } from './routes/submissions'
 import { Route as RegisterRouteImport } from './routes/register'
 import { Route as LoginRouteImport } from './routes/login'
@@ -16,12 +17,18 @@ import { Route as LeaderboardRouteImport } from './routes/leaderboard'
 import { Route as DashboardRouteImport } from './routes/dashboard'
 import { Route as AdminloginRouteImport } from './routes/adminlogin'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as SymposiumIndexRouteImport } from './routes/symposium.index'
 import { Route as QuizzesIndexRouteImport } from './routes/quizzes.index'
 import { Route as ProblemsIndexRouteImport } from './routes/problems.index'
 import { Route as DebuggingIndexRouteImport } from './routes/debugging.index'
 import { Route as AdminIndexRouteImport } from './routes/admin.index'
+import { Route as SymposiumSupportRouteImport } from './routes/symposium.support'
+import { Route as SymposiumRegisterRouteImport } from './routes/symposium.register'
+import { Route as SymposiumEventsRouteImport } from './routes/symposium.events'
+import { Route as SymposiumBusTimingsRouteImport } from './routes/symposium.bus-timings'
 import { Route as QuizzesIdRouteImport } from './routes/quizzes.$id'
 import { Route as ProblemsIdRouteImport } from './routes/problems.$id'
+import { Route as AdminSymposiumRouteImport } from './routes/admin.symposium'
 import { Route as AdminSubmissionsRouteImport } from './routes/admin.submissions'
 import { Route as AdminStudentsRouteImport } from './routes/admin.students'
 import { Route as AdminQuizzesRouteImport } from './routes/admin.quizzes'
@@ -30,6 +37,11 @@ import { Route as AdminLeaderboardRouteImport } from './routes/admin.leaderboard
 import { Route as AdminDebuggingRouteImport } from './routes/admin.debugging'
 import { Route as AdminCodingRouteImport } from './routes/admin.coding'
 
+const SymposiumRoute = SymposiumRouteImport.update({
+  id: '/symposium',
+  path: '/symposium',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const SubmissionsRoute = SubmissionsRouteImport.update({
   id: '/submissions',
   path: '/submissions',
@@ -65,6 +77,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SymposiumIndexRoute = SymposiumIndexRouteImport.update({
+  id: '/',
+  path: '/',
+  getParentRoute: () => SymposiumRoute,
+} as any)
 const QuizzesIndexRoute = QuizzesIndexRouteImport.update({
   id: '/quizzes/',
   path: '/quizzes/',
@@ -85,6 +102,26 @@ const AdminIndexRoute = AdminIndexRouteImport.update({
   path: '/admin/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const SymposiumSupportRoute = SymposiumSupportRouteImport.update({
+  id: '/support',
+  path: '/support',
+  getParentRoute: () => SymposiumRoute,
+} as any)
+const SymposiumRegisterRoute = SymposiumRegisterRouteImport.update({
+  id: '/register',
+  path: '/register',
+  getParentRoute: () => SymposiumRoute,
+} as any)
+const SymposiumEventsRoute = SymposiumEventsRouteImport.update({
+  id: '/events',
+  path: '/events',
+  getParentRoute: () => SymposiumRoute,
+} as any)
+const SymposiumBusTimingsRoute = SymposiumBusTimingsRouteImport.update({
+  id: '/bus-timings',
+  path: '/bus-timings',
+  getParentRoute: () => SymposiumRoute,
+} as any)
 const QuizzesIdRoute = QuizzesIdRouteImport.update({
   id: '/quizzes/$id',
   path: '/quizzes/$id',
@@ -93,6 +130,11 @@ const QuizzesIdRoute = QuizzesIdRouteImport.update({
 const ProblemsIdRoute = ProblemsIdRouteImport.update({
   id: '/problems/$id',
   path: '/problems/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminSymposiumRoute = AdminSymposiumRouteImport.update({
+  id: '/admin/symposium',
+  path: '/admin/symposium',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AdminSubmissionsRoute = AdminSubmissionsRouteImport.update({
@@ -139,6 +181,7 @@ export interface FileRoutesByFullPath {
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/submissions': typeof SubmissionsRoute
+  '/symposium': typeof SymposiumRouteWithChildren
   '/admin/coding': typeof AdminCodingRoute
   '/admin/debugging': typeof AdminDebuggingRoute
   '/admin/leaderboard': typeof AdminLeaderboardRoute
@@ -146,12 +189,18 @@ export interface FileRoutesByFullPath {
   '/admin/quizzes': typeof AdminQuizzesRoute
   '/admin/students': typeof AdminStudentsRoute
   '/admin/submissions': typeof AdminSubmissionsRoute
+  '/admin/symposium': typeof AdminSymposiumRoute
   '/problems/$id': typeof ProblemsIdRoute
   '/quizzes/$id': typeof QuizzesIdRoute
+  '/symposium/bus-timings': typeof SymposiumBusTimingsRoute
+  '/symposium/events': typeof SymposiumEventsRoute
+  '/symposium/register': typeof SymposiumRegisterRoute
+  '/symposium/support': typeof SymposiumSupportRoute
   '/admin/': typeof AdminIndexRoute
   '/debugging/': typeof DebuggingIndexRoute
   '/problems/': typeof ProblemsIndexRoute
   '/quizzes/': typeof QuizzesIndexRoute
+  '/symposium/': typeof SymposiumIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
@@ -168,12 +217,18 @@ export interface FileRoutesByTo {
   '/admin/quizzes': typeof AdminQuizzesRoute
   '/admin/students': typeof AdminStudentsRoute
   '/admin/submissions': typeof AdminSubmissionsRoute
+  '/admin/symposium': typeof AdminSymposiumRoute
   '/problems/$id': typeof ProblemsIdRoute
   '/quizzes/$id': typeof QuizzesIdRoute
+  '/symposium/bus-timings': typeof SymposiumBusTimingsRoute
+  '/symposium/events': typeof SymposiumEventsRoute
+  '/symposium/register': typeof SymposiumRegisterRoute
+  '/symposium/support': typeof SymposiumSupportRoute
   '/admin': typeof AdminIndexRoute
   '/debugging': typeof DebuggingIndexRoute
   '/problems': typeof ProblemsIndexRoute
   '/quizzes': typeof QuizzesIndexRoute
+  '/symposium': typeof SymposiumIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -184,6 +239,7 @@ export interface FileRoutesById {
   '/login': typeof LoginRoute
   '/register': typeof RegisterRoute
   '/submissions': typeof SubmissionsRoute
+  '/symposium': typeof SymposiumRouteWithChildren
   '/admin/coding': typeof AdminCodingRoute
   '/admin/debugging': typeof AdminDebuggingRoute
   '/admin/leaderboard': typeof AdminLeaderboardRoute
@@ -191,12 +247,18 @@ export interface FileRoutesById {
   '/admin/quizzes': typeof AdminQuizzesRoute
   '/admin/students': typeof AdminStudentsRoute
   '/admin/submissions': typeof AdminSubmissionsRoute
+  '/admin/symposium': typeof AdminSymposiumRoute
   '/problems/$id': typeof ProblemsIdRoute
   '/quizzes/$id': typeof QuizzesIdRoute
+  '/symposium/bus-timings': typeof SymposiumBusTimingsRoute
+  '/symposium/events': typeof SymposiumEventsRoute
+  '/symposium/register': typeof SymposiumRegisterRoute
+  '/symposium/support': typeof SymposiumSupportRoute
   '/admin/': typeof AdminIndexRoute
   '/debugging/': typeof DebuggingIndexRoute
   '/problems/': typeof ProblemsIndexRoute
   '/quizzes/': typeof QuizzesIndexRoute
+  '/symposium/': typeof SymposiumIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -208,6 +270,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/register'
     | '/submissions'
+    | '/symposium'
     | '/admin/coding'
     | '/admin/debugging'
     | '/admin/leaderboard'
@@ -215,12 +278,18 @@ export interface FileRouteTypes {
     | '/admin/quizzes'
     | '/admin/students'
     | '/admin/submissions'
+    | '/admin/symposium'
     | '/problems/$id'
     | '/quizzes/$id'
+    | '/symposium/bus-timings'
+    | '/symposium/events'
+    | '/symposium/register'
+    | '/symposium/support'
     | '/admin/'
     | '/debugging/'
     | '/problems/'
     | '/quizzes/'
+    | '/symposium/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
@@ -237,12 +306,18 @@ export interface FileRouteTypes {
     | '/admin/quizzes'
     | '/admin/students'
     | '/admin/submissions'
+    | '/admin/symposium'
     | '/problems/$id'
     | '/quizzes/$id'
+    | '/symposium/bus-timings'
+    | '/symposium/events'
+    | '/symposium/register'
+    | '/symposium/support'
     | '/admin'
     | '/debugging'
     | '/problems'
     | '/quizzes'
+    | '/symposium'
   id:
     | '__root__'
     | '/'
@@ -252,6 +327,7 @@ export interface FileRouteTypes {
     | '/login'
     | '/register'
     | '/submissions'
+    | '/symposium'
     | '/admin/coding'
     | '/admin/debugging'
     | '/admin/leaderboard'
@@ -259,12 +335,18 @@ export interface FileRouteTypes {
     | '/admin/quizzes'
     | '/admin/students'
     | '/admin/submissions'
+    | '/admin/symposium'
     | '/problems/$id'
     | '/quizzes/$id'
+    | '/symposium/bus-timings'
+    | '/symposium/events'
+    | '/symposium/register'
+    | '/symposium/support'
     | '/admin/'
     | '/debugging/'
     | '/problems/'
     | '/quizzes/'
+    | '/symposium/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -275,6 +357,7 @@ export interface RootRouteChildren {
   LoginRoute: typeof LoginRoute
   RegisterRoute: typeof RegisterRoute
   SubmissionsRoute: typeof SubmissionsRoute
+  SymposiumRoute: typeof SymposiumRouteWithChildren
   AdminCodingRoute: typeof AdminCodingRoute
   AdminDebuggingRoute: typeof AdminDebuggingRoute
   AdminLeaderboardRoute: typeof AdminLeaderboardRoute
@@ -282,6 +365,7 @@ export interface RootRouteChildren {
   AdminQuizzesRoute: typeof AdminQuizzesRoute
   AdminStudentsRoute: typeof AdminStudentsRoute
   AdminSubmissionsRoute: typeof AdminSubmissionsRoute
+  AdminSymposiumRoute: typeof AdminSymposiumRoute
   ProblemsIdRoute: typeof ProblemsIdRoute
   QuizzesIdRoute: typeof QuizzesIdRoute
   AdminIndexRoute: typeof AdminIndexRoute
@@ -292,6 +376,13 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
+    '/symposium': {
+      id: '/symposium'
+      path: '/symposium'
+      fullPath: '/symposium'
+      preLoaderRoute: typeof SymposiumRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/submissions': {
       id: '/submissions'
       path: '/submissions'
@@ -341,6 +432,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/symposium/': {
+      id: '/symposium/'
+      path: '/'
+      fullPath: '/symposium/'
+      preLoaderRoute: typeof SymposiumIndexRouteImport
+      parentRoute: typeof SymposiumRoute
+    }
     '/quizzes/': {
       id: '/quizzes/'
       path: '/quizzes'
@@ -369,6 +467,34 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AdminIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/symposium/support': {
+      id: '/symposium/support'
+      path: '/support'
+      fullPath: '/symposium/support'
+      preLoaderRoute: typeof SymposiumSupportRouteImport
+      parentRoute: typeof SymposiumRoute
+    }
+    '/symposium/register': {
+      id: '/symposium/register'
+      path: '/register'
+      fullPath: '/symposium/register'
+      preLoaderRoute: typeof SymposiumRegisterRouteImport
+      parentRoute: typeof SymposiumRoute
+    }
+    '/symposium/events': {
+      id: '/symposium/events'
+      path: '/events'
+      fullPath: '/symposium/events'
+      preLoaderRoute: typeof SymposiumEventsRouteImport
+      parentRoute: typeof SymposiumRoute
+    }
+    '/symposium/bus-timings': {
+      id: '/symposium/bus-timings'
+      path: '/bus-timings'
+      fullPath: '/symposium/bus-timings'
+      preLoaderRoute: typeof SymposiumBusTimingsRouteImport
+      parentRoute: typeof SymposiumRoute
+    }
     '/quizzes/$id': {
       id: '/quizzes/$id'
       path: '/quizzes/$id'
@@ -381,6 +507,13 @@ declare module '@tanstack/react-router' {
       path: '/problems/$id'
       fullPath: '/problems/$id'
       preLoaderRoute: typeof ProblemsIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/symposium': {
+      id: '/admin/symposium'
+      path: '/admin/symposium'
+      fullPath: '/admin/symposium'
+      preLoaderRoute: typeof AdminSymposiumRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/admin/submissions': {
@@ -435,6 +568,26 @@ declare module '@tanstack/react-router' {
   }
 }
 
+interface SymposiumRouteChildren {
+  SymposiumBusTimingsRoute: typeof SymposiumBusTimingsRoute
+  SymposiumEventsRoute: typeof SymposiumEventsRoute
+  SymposiumRegisterRoute: typeof SymposiumRegisterRoute
+  SymposiumSupportRoute: typeof SymposiumSupportRoute
+  SymposiumIndexRoute: typeof SymposiumIndexRoute
+}
+
+const SymposiumRouteChildren: SymposiumRouteChildren = {
+  SymposiumBusTimingsRoute: SymposiumBusTimingsRoute,
+  SymposiumEventsRoute: SymposiumEventsRoute,
+  SymposiumRegisterRoute: SymposiumRegisterRoute,
+  SymposiumSupportRoute: SymposiumSupportRoute,
+  SymposiumIndexRoute: SymposiumIndexRoute,
+}
+
+const SymposiumRouteWithChildren = SymposiumRoute._addFileChildren(
+  SymposiumRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AdminloginRoute: AdminloginRoute,
@@ -443,6 +596,7 @@ const rootRouteChildren: RootRouteChildren = {
   LoginRoute: LoginRoute,
   RegisterRoute: RegisterRoute,
   SubmissionsRoute: SubmissionsRoute,
+  SymposiumRoute: SymposiumRouteWithChildren,
   AdminCodingRoute: AdminCodingRoute,
   AdminDebuggingRoute: AdminDebuggingRoute,
   AdminLeaderboardRoute: AdminLeaderboardRoute,
@@ -450,6 +604,7 @@ const rootRouteChildren: RootRouteChildren = {
   AdminQuizzesRoute: AdminQuizzesRoute,
   AdminStudentsRoute: AdminStudentsRoute,
   AdminSubmissionsRoute: AdminSubmissionsRoute,
+  AdminSymposiumRoute: AdminSymposiumRoute,
   ProblemsIdRoute: ProblemsIdRoute,
   QuizzesIdRoute: QuizzesIdRoute,
   AdminIndexRoute: AdminIndexRoute,
