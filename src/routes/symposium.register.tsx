@@ -735,7 +735,6 @@ function PaymentStep({
   onBack: () => void;
 }) {
   const [qrFailed, setQrFailed] = useState(false);
-  const upiLink = `upi://pay?pa=${encodeURIComponent(UPI_ID)}&pn=${encodeURIComponent(PAYEE_NAME)}&am=${fee}&cu=INR&tn=${encodeURIComponent("InfoVerse26 Registration")}`;
 
   return (
     <div className="mt-8 sm:mt-10 space-y-5">
@@ -801,15 +800,6 @@ function PaymentStep({
             <div className="text-[11px] text-white/40 pt-1">Amount to pay</div>
             <div className="text-2xl font-black text-[#FF0000]">₹{fee}</div>
           </div>
-
-          {/* On a phone this opens the UPI app directly; on desktop it no-ops,
-              so it stays secondary to the QR. */}
-          <a
-            href={upiLink}
-            className="sm:hidden mt-5 block w-full text-center px-4 py-3.5 border border-white/25 text-xs font-bold uppercase tracking-wide hover:border-[#FF0000] hover:text-[#FF0000] transition-colors"
-          >
-            Open UPI app
-          </a>
         </div>
       </div>
 
