@@ -1015,6 +1015,17 @@ function SuccessStep({
           ₹{fee} against UTR {utr}. We verify manually and email {form.email || "your address"} within 24 hours.
           Bring your college ID on Oct 9.
         </p>
+        
+        {/* Email notice */}
+        <div className="mt-5 p-4 bg-yellow-500/10 border border-yellow-500/30 rounded max-w-md mx-auto">
+          <div className="flex items-start gap-3 text-left">
+            <AlertCircle className="h-5 w-5 text-yellow-500 shrink-0 mt-0.5" />
+            <div className="text-xs text-white/70 leading-relaxed">
+              <p className="font-semibold text-white/90 mb-1">Didn't receive confirmation email?</p>
+              <p>Check your <span className="text-yellow-500 font-medium">spam/junk folder</span>. If you still don't see it, please <a href="/symposium/support" className="text-[#FF0000] hover:underline font-medium">raise a query</a> with your UTR number.</p>
+            </div>
+          </div>
+        </div>
       </div>
 
       {/* WhatsApp Group Invitation */}
