@@ -233,11 +233,11 @@ function SymposiumSupport() {
         href="https://wa.me/916379778012"
         target="_blank"
         rel="noopener noreferrer"
-        className="fixed bottom-6 right-6 z-50 h-14 w-14 sm:h-16 sm:w-16 rounded-full bg-[#FF0000] hover:bg-[#FF0000]/90 shadow-lg hover:shadow-[0_0_30px_rgba(255,0,0,0.5)] flex items-center justify-center transition-all duration-300 hover:scale-110 group"
+        className="fixed bottom-6 right-6 z-50 h-12 w-12 sm:h-14 sm:w-14 rounded-full bg-black border-2 border-[#FF0000] hover:bg-[#FF0000]/10 shadow-lg hover:shadow-[0_0_30px_rgba(255,0,0,0.5)] flex items-center justify-center transition-all duration-300 hover:scale-110 group"
         aria-label="Contact us on WhatsApp"
       >
         <svg
-          className="h-7 w-7 sm:h-8 sm:w-8 text-white group-hover:scale-110 transition-transform"
+          className="h-6 w-6 sm:h-7 sm:w-7 text-[#FF0000] group-hover:scale-110 transition-transform"
           fill="currentColor"
           viewBox="0 0 24 24"
           xmlns="http://www.w3.org/2000/svg"
