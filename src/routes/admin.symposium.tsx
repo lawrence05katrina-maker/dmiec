@@ -666,8 +666,8 @@ function AdminSymposium() {
                     if (a.verified !== b.verified) {
                       return a.verified ? 1 : -1;
                     }
-                    // Then sort by registration time within each group
-                    return new Date(a.registeredAt).getTime() - new Date(b.registeredAt).getTime();
+                    // Then sort by registration time within each group (newest first)
+                    return new Date(b.registeredAt).getTime() - new Date(a.registeredAt).getTime();
                   })
                   .map((reg, index) => (
                     <tr key={reg.id} className="border-t border-white/60">
