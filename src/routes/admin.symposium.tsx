@@ -661,7 +661,14 @@ function AdminSymposium() {
                     if (filterEvent === "verified") return reg.verified;
                     return true;
                   })
-                  .sort((a, b) => new Date(a.registeredAt).getTime() - new Date(b.registeredAt).getTime())
+                  .sort((a, b) => {
+                    // Sort by verification status first (pending before verified)
+                    if (a.verified !== b.verified) {
+                      return a.verified ? 1 : -1;
+                    }
+                    // Then sort by registration time within each group
+                    return new Date(a.registeredAt).getTime() - new Date(b.registeredAt).getTime();
+                  })
                   .map((reg, index) => (
                     <tr key={reg.id} className="border-t border-white/60">
                       <td className="p-3 font-bold text-muted-foreground">{index + 1}</td>
