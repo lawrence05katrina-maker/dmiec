@@ -127,7 +127,7 @@ function SymposiumHome() {
           Every college. <span className="text-[#FF0000]">Tech branch.</span>
         </h2>
         <p className="mt-6 text-white/60 max-w-xl mx-auto text-sm sm:text-base">
-          Open to all engineering students across all departments and years. Pick your events,
+          Open to all STEM students across tech departments and years. Pick your events,
           register once, show up on Oct 9.
         </p>
         <MagneticButton
