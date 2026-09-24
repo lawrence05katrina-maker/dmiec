@@ -66,7 +66,17 @@ function SymposiumRegister() {
   const includesPaper = form.events.includes("Paper Presentation");
   const includesProject = form.events.includes("Project Expo");
   const isOnlinePaper = includesPaper && form.paperMode === "online";
-  const fee = isOnlinePaper ? 175 : 200;
+  
+  // Calculate fee based on event type
+  const hasTechnicalEvent = form.events.some(e => TECHNICAL_EVENTS.includes(e));
+  const hasNonTechnicalOnly = form.events.length > 0 && !hasTechnicalEvent;
+  
+  let fee = 200; // Default for technical events
+  if (isOnlinePaper) {
+    fee = 150; // Paper Presentation online
+  } else if (hasNonTechnicalOnly) {
+    fee = 150; // Only non-technical events
+  }
 
   // Scroll to top whenever the step changes — on mobile you'd otherwise land
   // mid-page after a long form.
