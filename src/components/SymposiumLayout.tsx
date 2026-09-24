@@ -24,11 +24,6 @@ export function SymposiumLayout({ children }: { children: ReactNode }) {
 
   return (
     <div className="min-h-screen bg-black text-white relative overflow-x-hidden" style={{ fontFamily: "'Space Grotesk', sans-serif" }}>
-      {/* Import Futuristic Font for Logo */}
-      <link rel="preconnect" href="https://fonts.googleapis.com" />
-      <link rel="preconnect" href="https://fonts.gstatic.com" crossOrigin="anonymous" />
-      <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&display=swap" rel="stylesheet" />
-      
       <div ref={spotlightRef} className="fixed inset-0 pointer-events-none z-0 transition-[background] duration-75" />
       <div ref={cursorRef} className="hidden lg:block fixed top-0 left-0 h-3 w-3 rounded-full bg-[#FF0000] pointer-events-none z-[60] mix-blend-difference transition-transform duration-100 ease-out" />
 
@@ -189,7 +184,7 @@ export function SymposiumLayout({ children }: { children: ReactNode }) {
 
       <header className="relative z-20 border-b border-white/15">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 py-4 sm:py-5 flex items-center justify-between gap-3">
-          <Link to="/symposium" className="text-xl sm:text-2xl tracking-tight shrink-0 font-black" style={{ fontFamily: "'Orbitron', sans-serif", fontWeight: 900, letterSpacing: '0.05em' }}>
+          <Link to="/symposium" className="font-display text-lg sm:text-2xl tracking-tight shrink-0">
             INFO<span className="text-[#FF0000]">VERSE</span>26
           </Link>
           <nav className="flex items-center gap-2 sm:gap-8 text-[10px] sm:text-xs uppercase tracking-widest">
