@@ -156,13 +156,13 @@ function SymposiumSupport() {
             </div>
 
             <div>
-              <label className="block text-[9px] sm:text-xs uppercase tracking-widest text-white/40 mb-1.5 sm:mb-2">Phone *</label>
+              <label className="block text-[9px] sm:text-xs uppercase tracking-widest text-white/40 mb-1.5 sm:mb-2">WhatsApp No *</label>
               <input
                 required
                 type="tel"
                 value={form.phone}
                 onChange={(e) => setForm({ ...form, phone: e.target.value })}
-                placeholder="10-digit mobile"
+                placeholder="10-digit WhatsApp number"
                 className="support-input"
               />
             </div>

@@ -497,8 +497,8 @@ function DetailsStep({
         <Field label="Email">
           <input required type="email" value={form.email} onChange={(e) => setForm({ ...form, email: e.target.value })} className="input" placeholder="you@example.com" />
         </Field>
-        <Field label="Phone">
-          <input required type="tel" inputMode="numeric" pattern="[0-9]{10}" title="10-digit mobile number" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className="input" placeholder="10-digit mobile" />
+        <Field label="WhatsApp No">
+          <input required type="tel" inputMode="numeric" pattern="[0-9]{10}" title="10-digit WhatsApp number" value={form.phone} onChange={(e) => setForm({ ...form, phone: e.target.value })} className="input" placeholder="10-digit WhatsApp number" />
         </Field>
         <Field label="College name">
           <input required value={form.college} onChange={(e) => setForm({ ...form, college: e.target.value })} className="input" />
