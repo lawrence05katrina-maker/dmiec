@@ -78,7 +78,7 @@ function SymposiumHome() {
         {[
           { n: "05", l: "Technical events", sub: "Prize: ₹1000 1st, ₹500 2nd" },
           { n: "04", l: "Non-technical events", sub: "Participation certificate" },
-          { n: "₹200", l: "Technical events", sub: "₹150 for non-technical only" },
+          { n: "₹200", l: "Offline events", sub: "₹150 for online mode" },
         ].map((s, i) => (
           <div key={i} className="reveal" style={{ animationDelay: `${i * 0.15}s` }}>
             <div className="font-display text-4xl sm:text-5xl text-[#FF0000] flicker">{s.n}</div>
