@@ -11,7 +11,7 @@ export const Route = createFileRoute("/symposium/register")({ component: Symposi
    screenshot in as public/upi-qr.png and it renders automatically; if the
    file is missing the component falls back to a readable UPI ID panel. */
 const UPI_ID = "6369857409@pytes";
-const PAYEE_NAME = "DMI Engineering College — IT Dept";
+const PAYEE_NAME = "Angel Antony C";
 const QR_IMAGE = "/upi-qr.jpeg";
 
 const TECHNICAL_EVENTS = ["Paper Presentation", "Project Expo", "Website Creation", "Debugging", "Quiz"];
