@@ -18,7 +18,7 @@ type EventInfo = {
 
 const EVENTS: EventInfo[] = [
   {
-    name: "Paper Presentation", category: "Technical", tag: "Solo",
+    name: "Paper Presentation", category: "Technical", tag: "Team/Solo",
     desc: "Present your research or technical idea. Online and offline modes available.",
     venue: "EEE Seminar Hall ", time: "10:00 AM – 12:30 PM",
     coordinator: "Mrs.Afrin Banu· +91 9486666141",
