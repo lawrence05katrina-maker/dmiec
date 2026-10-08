@@ -15,9 +15,6 @@ type PlayQuestion = { id: string; text: string; options: string[]; marks: number
 type PlayQuiz = { id: string; title: string; topic: string; difficulty: string; timeLimit: number; questions: PlayQuestion[] };
 type ReviewItem = { id: string; text: string; options: string[]; marks: number; correct: number; picked: number | null; isCorrect: boolean };
 
-// TEMP: set to false to bring the access-code screen back
-const SKIP_ACCESS_CODE = true;
-
 function authHeaders() {
   const token = localStorage.getItem("admin_token");
   return { "Content-Type": "application/json", Authorization: `Bearer ${token}` };
@@ -27,6 +24,8 @@ function QuizPlay() {
   const { id } = Route.useParams();
   const router = useRouter();
   const [quiz, setQuiz] = useState<PlayQuiz | null>(null);
+  const [loadError, setLoadError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(true);
   const [answers, setAnswers] = useState<Record<string, number>>({});
   const [timeLeft, setTimeLeft] = useState<number | null>(null);
   const [submitted, setSubmitted] = useState<{ score: number; total: number; review: ReviewItem[] } | null>(null);
@@ -37,17 +36,39 @@ function QuizPlay() {
   const answersRef = useRef<Record<string, number>>({});
   // Absolute end time of the exam (keeps timer accurate during calls/notifications)
   const endTimeRef = useRef<number | null>(null);
-
-  // Access-code gate
-  const [codeEntered, setCodeEntered] = useState("");
-  const [unlocked, setUnlocked] = useState(false);
-  const [unlocking, setUnlocking] = useState(false);
-  const [gateError, setGateError] = useState<string | null>(null);
-  const autoStartedRef = useRef(false);
+  const loadedRef = useRef(false);
 
   useEffect(() => {
     answersRef.current = answers;
   }, [answers]);
+
+  // Load the quiz automatically (no access code)
+  async function loadQuiz() {
+    setLoading(true);
+    setLoadError(null);
+    try {
+      const res = await fetch(`${BASE_URL}/api/quizzes/${id}/start`, {
+        method: "POST",
+        headers: authHeaders(),
+        body: JSON.stringify({}),
+      });
+      const data = await res.json();
+      if (!res.ok) { setLoadError(data?.message || "Could not load quiz"); return; }
+      setQuiz(data);
+      setTimeLeft(data.timeLimit * 60);
+    } catch {
+      setLoadError("Could not reach server. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  }
+
+  useEffect(() => {
+    if (loadedRef.current) return;
+    loadedRef.current = true;
+    loadQuiz();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   const startExam = () => {
     if (!quiz) return;
@@ -81,37 +102,6 @@ function QuizPlay() {
   //   enabled: !!quiz && examStarted && !submitted,
   //   onViolation: handleSecurityViolation,
   // });
-
-  async function handleUnlock() {
-    if (!SKIP_ACCESS_CODE && !codeEntered.trim()) { toast.error("Enter your access code"); return; }
-    setUnlocking(true);
-    setGateError(null);
-    try {
-      const res = await fetch(`${BASE_URL}/api/quizzes/${id}/start`, {
-        method: "POST",
-        headers: authHeaders(),
-        body: JSON.stringify({ code: codeEntered.trim() }),
-      });
-      const data = await res.json();
-      if (!res.ok) { setGateError(data?.message || "Invalid code"); return; }
-      setQuiz(data);
-      setTimeLeft(data.timeLimit * 60);
-      setUnlocked(true);
-    } catch {
-      setGateError("Could not reach server. Please try again.");
-    } finally {
-      setUnlocking(false);
-    }
-  }
-
-  // TEMP: load the quiz automatically without asking for an access code
-  useEffect(() => {
-    if (SKIP_ACCESS_CODE && !autoStartedRef.current) {
-      autoStartedRef.current = true;
-      handleUnlock();
-    }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   // Countdown based on an end timestamp, so it stays accurate even if the
   // browser pauses/throttles timers during a call or notification
@@ -159,49 +149,23 @@ function QuizPlay() {
     }
   }
 
-  // Gate: require a valid access code before the quiz is fetched/shown
-  if (!unlocked && SKIP_ACCESS_CODE) {
+  if (loading) {
+    return <Shell><div className="text-sm text-muted-foreground">Loading quiz...</div></Shell>;
+  }
+
+  if (loadError || !quiz) {
     return (
       <Shell>
         <GlassCard tint="plain" className="p-8 max-w-md mx-auto text-center">
-          {gateError ? (
-            <>
-              <div className="text-sm text-rose-600">{gateError}</div>
-              <Button className="mt-4" onClick={handleUnlock} disabled={unlocking}>
-                {unlocking ? "Loading..." : "Try again"}
-              </Button>
-            </>
-          ) : (
-            <div className="text-sm text-muted-foreground">Loading quiz...</div>
-          )}
+          <div className="text-sm text-rose-600">{loadError || "Could not load quiz"}</div>
+          <div className="mt-4 flex gap-2 justify-center">
+            <Button onClick={loadQuiz}>Try again</Button>
+            <Button variant="secondary" onClick={() => router.navigate({ to: "/quizzes" })}>Back</Button>
+          </div>
         </GlassCard>
       </Shell>
     );
   }
-
-  if (!unlocked) {
-    return (
-      <Shell>
-        <GlassCard tint="plain" className="p-8 max-w-md mx-auto text-center">
-          <h1 className="text-xl font-bold">Enter your access code</h1>
-          <p className="text-sm text-muted-foreground mt-1">This quiz requires a one-time code given to you by your admin.</p>
-          <input
-            value={codeEntered}
-            onChange={(e) => setCodeEntered(e.target.value.toUpperCase())}
-            className="mt-4 w-full text-center text-lg tracking-widest font-mono rounded-lg border px-3 py-2"
-            placeholder="ABCD1234"
-            maxLength={8}
-          />
-          {gateError && <div className="text-sm text-rose-600 mt-2">{gateError}</div>}
-          <Button className="mt-4 w-full" onClick={handleUnlock} disabled={unlocking}>
-            {unlocking ? "Checking..." : "Start Quiz"}
-          </Button>
-        </GlassCard>
-      </Shell>
-    );
-  }
-
-  if (!quiz) return <Shell><div className="text-sm text-muted-foreground">Loading quiz...</div></Shell>;
 
   const answered = Object.keys(answers).length;
   const mm = Math.floor((timeLeft || 0) / 60).toString().padStart(2, "0");
