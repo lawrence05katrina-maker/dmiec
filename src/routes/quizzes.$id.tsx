@@ -15,6 +15,9 @@ type PlayQuestion = { id: string; text: string; options: string[]; marks: number
 type PlayQuiz = { id: string; title: string; topic: string; difficulty: string; timeLimit: number; questions: PlayQuestion[] };
 type ReviewItem = { id: string; text: string; options: string[]; marks: number; correct: number; picked: number | null; isCorrect: boolean };
 
+// TEMP: set to false to bring the access-code screen back
+const SKIP_ACCESS_CODE = true;
+
 function authHeaders() {
   const token = localStorage.getItem("admin_token");
   return { "Content-Type": "application/json", Authorization: `Bearer ${token}` };
@@ -40,6 +43,7 @@ function QuizPlay() {
   const [unlocked, setUnlocked] = useState(false);
   const [unlocking, setUnlocking] = useState(false);
   const [gateError, setGateError] = useState<string | null>(null);
+  const autoStartedRef = useRef(false);
 
   useEffect(() => {
     answersRef.current = answers;
@@ -79,7 +83,7 @@ function QuizPlay() {
   // });
 
   async function handleUnlock() {
-    if (!codeEntered.trim()) { toast.error("Enter your access code"); return; }
+    if (!SKIP_ACCESS_CODE && !codeEntered.trim()) { toast.error("Enter your access code"); return; }
     setUnlocking(true);
     setGateError(null);
     try {
@@ -99,6 +103,15 @@ function QuizPlay() {
       setUnlocking(false);
     }
   }
+
+  // TEMP: load the quiz automatically without asking for an access code
+  useEffect(() => {
+    if (SKIP_ACCESS_CODE && !autoStartedRef.current) {
+      autoStartedRef.current = true;
+      handleUnlock();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   // Countdown based on an end timestamp, so it stays accurate even if the
   // browser pauses/throttles timers during a call or notification
@@ -147,6 +160,25 @@ function QuizPlay() {
   }
 
   // Gate: require a valid access code before the quiz is fetched/shown
+  if (!unlocked && SKIP_ACCESS_CODE) {
+    return (
+      <Shell>
+        <GlassCard tint="plain" className="p-8 max-w-md mx-auto text-center">
+          {gateError ? (
+            <>
+              <div className="text-sm text-rose-600">{gateError}</div>
+              <Button className="mt-4" onClick={handleUnlock} disabled={unlocking}>
+                {unlocking ? "Loading..." : "Try again"}
+              </Button>
+            </>
+          ) : (
+            <div className="text-sm text-muted-foreground">Loading quiz...</div>
+          )}
+        </GlassCard>
+      </Shell>
+    );
+  }
+
   if (!unlocked) {
     return (
       <Shell>
