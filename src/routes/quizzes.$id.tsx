@@ -1,6 +1,7 @@
-import { useExamSecurity } from "@/hooks/useExamSecurity";
+// TEMP DISABLED: exam security hook (re-enable later by restoring the import and the hook call below)
+// import { useExamSecurity } from "@/hooks/useExamSecurity";
 import { createFileRoute, useRouter, Link } from "@tanstack/react-router";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Shell, GlassCard } from "@/components/Shell";
 import { Guard } from "@/components/Guard";
 import { Button } from "@/components/ui/button";
@@ -29,42 +30,53 @@ function QuizPlay() {
   const [submitting, setSubmitting] = useState(false);
   const [examStarted, setExamStarted] = useState(false);
 
+  // Always holds the latest answers (avoids stale data on auto-submit)
+  const answersRef = useRef<Record<string, number>>({});
+  // Absolute end time of the exam (keeps timer accurate during calls/notifications)
+  const endTimeRef = useRef<number | null>(null);
+
   // Access-code gate
   const [codeEntered, setCodeEntered] = useState("");
   const [unlocked, setUnlocked] = useState(false);
   const [unlocking, setUnlocking] = useState(false);
   const [gateError, setGateError] = useState<string | null>(null);
 
-  const startExam = async () => {
+  useEffect(() => {
+    answersRef.current = answers;
+  }, [answers]);
+
+  const startExam = () => {
+    if (!quiz) return;
+    endTimeRef.current = Date.now() + quiz.timeLimit * 60 * 1000;
+    setTimeLeft(quiz.timeLimit * 60);
+    setExamStarted(true);
+    // Fullscreen is optional now (and often unsupported on mobile)
     try {
-      await document.documentElement.requestFullscreen();
-      setExamStarted(true);
+      document.documentElement.requestFullscreen?.().catch(() => {});
     } catch {
-      toast.error("Fullscreen is required to start the test.");
+      /* ignore */
     }
   };
 
-  function reportViolation(eventType: string, detail?: string) {
-    fetch(`${BASE_URL}/api/quizzes/${id}/malpractice`, {
-      method: "POST",
-      headers: authHeaders(),
-      body: JSON.stringify({ eventType, detail }),
-    }).catch(() => {});
-  }
-
-  const handleSecurityViolation = (reason: string) => {
-    reportViolation("security_violation", reason);
-    toast.error("Quiz cancelled", {
-      description: reason,
-      duration: 5000,
-    });
-    router.navigate({ to: "/quizzes" });
-  };
-
-  useExamSecurity({
-    enabled: !!quiz && examStarted && !submitted,
-    onViolation: handleSecurityViolation,
-  });
+  // TEMP DISABLED: exam security
+  // function reportViolation(eventType: string, detail?: string) {
+  //   fetch(`${BASE_URL}/api/quizzes/${id}/malpractice`, {
+  //     method: "POST",
+  //     headers: authHeaders(),
+  //     body: JSON.stringify({ eventType, detail }),
+  //   }).catch(() => {});
+  // }
+  //
+  // const handleSecurityViolation = (reason: string) => {
+  //   reportViolation("security_violation", reason);
+  //   toast.error("Quiz cancelled", { description: reason, duration: 5000 });
+  //   router.navigate({ to: "/quizzes" });
+  // };
+  //
+  // useExamSecurity({
+  //   enabled: !!quiz && examStarted && !submitted,
+  //   onViolation: handleSecurityViolation,
+  // });
 
   async function handleUnlock() {
     if (!codeEntered.trim()) { toast.error("Enter your access code"); return; }
@@ -88,32 +100,51 @@ function QuizPlay() {
     }
   }
 
+  // Countdown based on an end timestamp, so it stays accurate even if the
+  // browser pauses/throttles timers during a call or notification
   useEffect(() => {
-    if (!quiz || !examStarted || submitted || timeLeft === null) {
-      return;
-    }
+    if (!quiz || !examStarted || submitted || endTimeRef.current === null) return;
 
-    const timer = window.setInterval(() => {
-      setTimeLeft((current) => {
-        if (current === null) {
-          return null;
-        }
-
-        if (current <= 1) {
-          window.clearInterval(timer);
-          handleSubmit();
-          return 0;
-        }
-
-        return current - 1;
-      });
-    }, 1000);
-
-    return () => {
-      window.clearInterval(timer);
+    const tick = () => {
+      const remaining = Math.max(
+        0,
+        Math.ceil((endTimeRef.current! - Date.now()) / 1000)
+      );
+      setTimeLeft(remaining);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+
+    tick();
+    const timer = window.setInterval(tick, 1000);
+    return () => window.clearInterval(timer);
   }, [quiz, examStarted, submitted]);
+
+  // Auto-submit when time ends
+  useEffect(() => {
+    if (timeLeft === 0 && quiz && examStarted && !submitted && !submitting) {
+      handleSubmit();
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [timeLeft]);
+
+  async function handleSubmit() {
+    if (submitted || submitting) return;
+    setSubmitting(true);
+    try {
+      const res = await fetch(`${BASE_URL}/api/quizzes/${id}/submit`, {
+        method: "POST",
+        headers: authHeaders(),
+        body: JSON.stringify({ answers: answersRef.current }),
+      });
+      const data = await res.json();
+      if (!res.ok) { toast.error(data?.message || "Failed to submit"); return; }
+      setSubmitted(data);
+      toast.success(`Scored ${data.score}/${data.total}`);
+    } catch {
+      toast.error("Could not reach server. Please try again.");
+    } finally {
+      setSubmitting(false);
+    }
+  }
 
   // Gate: require a valid access code before the quiz is fetched/shown
   if (!unlocked) {
@@ -140,26 +171,6 @@ function QuizPlay() {
 
   if (!quiz) return <Shell><div className="text-sm text-muted-foreground">Loading quiz...</div></Shell>;
 
-  async function handleSubmit() {
-    if (submitted || submitting) return;
-    setSubmitting(true);
-    try {
-      const res = await fetch(`${BASE_URL}/api/quizzes/${id}/submit`, {
-        method: "POST",
-        headers: authHeaders(),
-        body: JSON.stringify({ answers }),
-      });
-      const data = await res.json();
-      if (!res.ok) { toast.error(data?.message || "Failed to submit"); return; }
-      setSubmitted(data);
-      toast.success(`Scored ${data.score}/${data.total}`);
-    } catch {
-      toast.error("Could not reach server. Please try again.");
-    } finally {
-      setSubmitting(false);
-    }
-  }
-
   const answered = Object.keys(answers).length;
   const mm = Math.floor((timeLeft || 0) / 60).toString().padStart(2, "0");
   const ss = ((timeLeft || 0) % 60).toString().padStart(2, "0");
@@ -170,12 +181,10 @@ function QuizPlay() {
       <Shell>
         <GlassCard tint="plain" className="max-w-xl mx-auto p-8 text-center">
           <h1 className="text-2xl font-bold">{quiz.title}</h1>
-          <p className="mt-3 text-sm text-muted-foreground">This test must be completed in fullscreen mode.</p>
+          <p className="mt-3 text-sm text-muted-foreground">Read the instructions and start when you're ready.</p>
           <div className="mt-4 text-sm text-muted-foreground space-y-1">
-            <p>• Do not switch tabs.</p>
-            <p>• Do not minimize the browser.</p>
-            <p>• Do not switch applications.</p>
-            <p>• Do not exit fullscreen mode.</p>
+            <p>• The timer starts as soon as you click Start Test.</p>
+            <p>• Your test is submitted automatically when time ends.</p>
           </div>
           <Button className="mt-6" onClick={startExam}>Start Test</Button>
         </GlassCard>
@@ -241,7 +250,7 @@ function QuizPlay() {
                   <button
                     key={oi}
                     type="button"
-                    onClick={() => setAnswers({ ...answers, [q.id]: oi })}
+                    onClick={() => setAnswers((prev) => ({ ...prev, [q.id]: oi }))}
                     className={`text-left px-4 py-3 rounded-xl border transition-all ${selected ? "bg-foreground text-background border-foreground" : "bg-white/70 border-white hover:bg-white"}`}
                   >
                     <span className="text-xs opacity-70 mr-2">{String.fromCharCode(65 + oi)}.</span>{opt}
